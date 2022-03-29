@@ -6,16 +6,18 @@ require './include/include.php';
 // Start Session
 session_start();
 
-echo "<pre>";
-var_dump($_SESSION);
-echo "</pre>";
-
-echo "<br>State: ".$_GET['state'];
-
 $hashed_state = hash('sha512',$_GET['state']);
 if($hashed_state == $_SESSION['token']){
     error_log("landing.php: Session Match");
 }
+else{
+    echo "<h3>Valid Session</h3>";
+}
+
+if(!isset($_SESSION['access_token'])){
+    error_log("landing.php: No Access Token");
+}
+echo "<h3>Acquired Access Token</h3>";
 
 // check auth token
 $url = $OAUTH2_ENDPOINT."userinfo";
@@ -28,13 +30,23 @@ curl_setopt($crl,CURLOPT_HTTPHEADER,array(
 ));
 try{
     $result = curl_exec($crl);
-    echo "<pre>";
-    var_dump($result);
-    echo "</pre>";
 }
 catch (exception $e){
     var_dump($e);
 }
+// Decode result
+$resultObj = json_decode($result);
+if(!isset($resultObj->provider)){
+    error_log("landing.php: Invalid Access Token");
+    exit();
+}
 
+echo "<h3>".$resultObj->sub." Logged In</h3>";
+
+$scopes = explode(' ',$resultObj->scope);
+
+foreach($scopes as $scope){
+    echo "<h4>Scope: ".$scope."</h4>";
+}
 
 ?>

@@ -15,6 +15,7 @@ if(!isset($_SESSION['token']) || !isset($_SESSION['nonce'])){
 if(isset($_GET['state']) && isset($_GET['code'])){
     error_log("callback.php: state: ".$_GET['state']);
     error_log("callback.php: code: ".$_GET['code']);
+    error_log("callback.php: error: ".$_GET['error']);
 }
 // Check session validity
 $hashed_state = hash('sha512',$_GET['state']);
@@ -42,8 +43,8 @@ curl_setopt($crl, CURLOPT_HTTPHEADER, array(
 // Submit the POST request
 try{
     $result = curl_exec($crl);
-    var_dump($result);
-    $status_code = curl_getinfo($crl, CURLINFO_HTTP_CODE);   //get status code
+    //var_dump($result);
+    //$status_code = curl_getinfo($crl, CURLINFO_HTTP_CODE);   //get status code
     //var_dump($status_code);
 }
 catch (exception $e){
@@ -56,6 +57,9 @@ if(!isset($resultObj->access_token)){
     error_log("callback.php: No Access Token Returned");
 }
 $accessToken = $resultObj->access_token;
+if(isset($_GET['error'])){
+    echo "<h3>".$_GET['error']."</h3>";
+}
 error_log("callback.php: Access Token Acquired");
 curl_close($crl);
 
