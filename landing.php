@@ -17,7 +17,7 @@ else{
 if(!isset($_SESSION['access_token'])){
     error_log("landing.php: No Access Token");
 }
-echo "<h3>Acquired Access Token</h3>";
+//echo "<h3>Acquired Access Token</h3>";
 
 // check auth token
 $url = $OAUTH2_ENDPOINT."userinfo";
@@ -40,7 +40,6 @@ if(!isset($resultObj->provider)){
     error_log("landing.php: Invalid Access Token");
     exit();
 }
-
 echo "<h3>".$resultObj->sub." Logged In</h3>";
 
 $scopes = explode(' ',$resultObj->scope);
@@ -48,5 +47,27 @@ $scopes = explode(' ',$resultObj->scope);
 foreach($scopes as $scope){
     echo "<h4>Scope: ".$scope."</h4>";
 }
+
+
+
+
+$logoutUrl = "https://auth.circle.army/oauth2/sessions/logout?id_token_hint=".$_SESSION['id_token']."&post_logout_redirect_uri=".urlencode('https://www.circle.army/logout.php');
+//$logoutUrl = "https://auth.circle.army/oauth2/sessions/logout?id_token_hint=".urlencode($_SESSION['access_token'])."&post_logout_redirect_uri=".urlencode('https://www.circle.army/logout.php');
+
+?>
+
+
+
+
+<br>
+<a href="<?php echo $logoutUrl; ?>">Log Out</a>
+<pre>
+    <?php var_dump($_SESSION); ?>
+</pre>
+
+<?php
+
+
+
 
 ?>

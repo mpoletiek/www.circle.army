@@ -6,17 +6,24 @@ require './include/include.php';
 // Start Session
 session_start();
 
+// Check for errors
+if(isset($_GET['error']) && isset($_GET['error_description'])){
+    echo "<h1>".$_GET['error']."</h1>";
+    echo "<h3>".$_GET['error_description']."</h3>";
+    exit();
+}
+
 // Check for session variables
 if(!isset($_SESSION['token']) || !isset($_SESSION['nonce'])){
     error_log("callback.php: Improper Session");
     exit();
 }
 // Get new variables
-if(isset($_GET['state']) && isset($_GET['code'])){
-    error_log("callback.php: state: ".$_GET['state']);
-    error_log("callback.php: code: ".$_GET['code']);
-    error_log("callback.php: error: ".$_GET['error']);
+if(!isset($_GET['state']) || !isset($_GET['code'])){
+    error_log("callback.php: invalid arguments");
+    exit();
 }
+
 // Check session validity
 $hashed_state = hash('sha512',$_GET['state']);
 if($hashed_state == $_SESSION['token']){
@@ -43,7 +50,7 @@ curl_setopt($crl, CURLOPT_HTTPHEADER, array(
 // Submit the POST request
 try{
     $result = curl_exec($crl);
-    //var_dump($result);
+    var_dump($result);
     //$status_code = curl_getinfo($crl, CURLINFO_HTTP_CODE);   //get status code
     //var_dump($status_code);
 }
@@ -57,6 +64,9 @@ if(!isset($resultObj->access_token)){
     error_log("callback.php: No Access Token Returned");
 }
 $accessToken = $resultObj->access_token;
+$_SESSION['access_token']=$accessToken;
+$_SESSION['id_token']=$resultObj->id_token;
+//var_dump($accessToken);
 if(isset($_GET['error'])){
     echo "<h3>".$_GET['error']."</h3>";
 }
