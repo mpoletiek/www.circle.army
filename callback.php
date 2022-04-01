@@ -8,7 +8,7 @@ session_start();
 
 // Check for errors
 if(isset($_GET['error']) && isset($_GET['error_description'])){
-    echo "<h1>".$_GET['error']."</h1>";
+    echo "<h2>".$_GET['error']."</h2>";
     echo "<h3>".$_GET['error_description']."</h3>";
     exit();
 }
@@ -27,7 +27,7 @@ if(!isset($_GET['state']) || !isset($_GET['code'])){
 // Check session validity
 $hashed_state = hash('sha512',$_GET['state']);
 if($hashed_state == $_SESSION['token']){
-    error_log("callback.php: Session Matched");
+    //error_log("callback.php: Session Matched");
 }
 else{
     error_log("callback.php: No Session Match");
@@ -105,33 +105,7 @@ if(!isset($resultObj->sub)){
 echo "<h1>".$resultObj->sub." Logged In</h1>";
 $_SESSION['access_token'] = $accessToken;
 
-header("Location: /landing.php?state=".$_GET['state']);
+header("Location: /home.php?state=".$_GET['state']);
 
-/*
-if($_GET['nonce'] == $_SESSION['nonce']){
-    echo "<br>";
-    echo "Nonce Matched<br>";
-    //$challenge = hash('sha256',)
-    // get token
-    $pattern="/token=(.*)/";
-    preg_match($pattern,$_GET['state'],$matches);
-    $challenge = hash('sha512',$matches[1]);
-    echo "Challenge: ".$challenge."<br>";
-    if($challenge == $_SESSION['hashed_secret']){
-        echo "<br>Session Secured<br>";
-
-
-
-    }
-    else{
-        echo "<br>Session Mismatch<br>";
-    }
-}
-else{
-    echo "<br>";
-    echo "Nonce Mismatch";
-}
-
-*/
 
 ?>

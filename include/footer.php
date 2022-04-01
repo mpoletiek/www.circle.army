@@ -1,6 +1,13 @@
 <footer class="footer mt-auto py-3 bg-dark text-light fixed-bottom">
   <div class="container">
-    <span class="text-muted"><a href="/" class="link-light">Circle.Army</a></span>
+    <div class="row">
+      <div class="col">
+        <span class="text-muted"><a href="/" class="link-light">Circle.Army</a></span>
+      </div>
+      <div class="col text-end">
+        <span class="text-muted" id="footer-insert-right"></span>
+      </div>
+    </div>
   </div>
   <!--
   <div class="container footer-pg">

@@ -6,18 +6,9 @@ require './include/include.php';
 // Start Session
 session_start();
 
-$hashed_state = hash('sha512',$_GET['state']);
-if($hashed_state == $_SESSION['token']){
-    error_log("landing.php: Session Match");
-}
-else{
-    error_log("landing.php: Invalid Session");
-    header("Location: https://www.circle.army/");
-    exit();
-}
-
 if(!isset($_SESSION['access_token'])){
     error_log("landing.php: No Access Token");
+    header("Location: /");
 }
 
 // check auth token
@@ -41,13 +32,8 @@ if(!isset($resultObj->provider)){
     error_log("landing.php: Invalid Access Token");
     exit();
 }
-//echo "<h3>".$resultObj->sub." Logged In</h3>";
 
 $scopes = explode(' ',$resultObj->scope);
-
-foreach($scopes as $scope){
-    //echo "<h4>Scope: ".$scope."</h4>";
-}
 
 $logoutUrl = "https://auth.circle.army/oauth2/sessions/logout?id_token_hint=".$_SESSION['id_token']."&post_logout_redirect_uri=".urlencode('https://www.circle.army/logout.php');
 
@@ -108,6 +94,11 @@ $logoutUrl = "https://auth.circle.army/oauth2/sessions/logout?id_token_hint=".$_
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $('#footer-insert-right').html('<a class="link-light" href="<?php echo $logoutUrl; ?>">Log Out</a>');
+    </script>
+
     <!-- Landing App -->
     <script src="js/landingApp.js"></script>
 
