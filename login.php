@@ -60,6 +60,9 @@ $combinedURL = $oauthURL."?response_type=code&client_id=auth-client0&redirect_ur
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="css/custom.css" rel="stylesheet">
 
+    <!-- fontawesome 6 free -->
+    <link href="assets/fontawesome6/css/all.css" rel="stylesheet">
+
     <title>Circle.Army - Log In</title>
 
   </head>
@@ -90,9 +93,6 @@ $combinedURL = $oauthURL."?response_type=code&client_id=auth-client0&redirect_ur
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="js/navbar.js"></script>
-    <script>
-        setMenuItem("m_home");
-    </script>
 
   </body>
 </html>
